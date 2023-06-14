@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: server
+
+  datasource:
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/flow
+
+
+  mqtt:
+    #MQTT服务地址，端口号默认11883，如果有多个，用逗号隔开
+    url: mqtt://192.168.31.78:1883
+    #用户名
+    username: admin
+    #密码
+    password: password
+    #客户端id(不能重复)
+    client:
+      id: subClient
+    #MQTT默认的消息推送主题，实际可在调用接口是指定
+    default:
+      topic: topic
+
+
+upload:
+  localPath: C:/Users/江子岩的computer/Desktop/save/
+  accessPath: /upload/
+
