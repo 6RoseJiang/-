@@ -6,12 +6,17 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("firefighterinformation")
-public class FireFighterInformation {
+@TableName("LeftArm_table")
+public class LeftArm {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    private String firefighterId;
-    private String name;
-    private Integer deviceStatus;
-    private String initPos;
+    private String Timestamp;
+    private double acc_x;
+    private double acc_y;
+    private double acc_z;
+    private double gyro_x;
+    private double gyro_y;
+    private double gyro_z;
+    private int EMG;
+    private int Seq;
 }

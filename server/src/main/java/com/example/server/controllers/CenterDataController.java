@@ -1,13 +1,14 @@
 package com.example.server.controllers;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.server.pojo.CenterData;
 import com.example.server.pojo.FireFighterInformation;
+import com.example.server.service.ICenterDataService;
 import com.example.server.service.IFireFighterService;
 import com.example.server.vo.FirefighterVo;
 import
- com.example.server.vo.Result;
+        com.example.server.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,51 +26,52 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @Slf4j
-@RequestMapping("/firefighter")
-public class FireFighterController {
+@RequestMapping("/centerdata")
+public class CenterDataController {
 
     @Autowired
-    private IFireFighterService fireFighterService;
-    @PostMapping("/addFireFighter")
-    public Result add(HttpServletRequest request, @RequestBody FireFighterInformation fireFighterInformation){
+    private ICenterDataService centerDataService;
+    @PostMapping("/addCenterData")
+    public Result add(HttpServletRequest request, @RequestBody CenterData centerData){
 
-        log.info("firefighter added, information={}", fireFighterInformation);
-        fireFighterService.saveFireFighter(fireFighterInformation);
+        log.info("centerdata added, information={}", centerData);
+        centerDataService.saveCenterData(centerData);
         return Result.success();
     }
 
-    @GetMapping("/listFireFighter")
+    @GetMapping("/listCenterData")
     public Result list(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "50") int pageSize){
-        log.info("firefighter list, pageNum = {}, pageSize = {}", pageNum, pageSize);
-        Page<FireFighterInformation> page = new Page<>(pageNum, pageSize);
-        IPage<FireFighterInformation> pageResult = fireFighterService.page(page);
+        log.info("centerdata list, pageNum = {}, pageSize = {}", pageNum, pageSize);
+        Page<CenterData> page = new Page<>(pageNum, pageSize);
+        IPage<CenterData> pageResult = centerDataService.page(page);
 
-        List<FireFighterInformation> FireFighterInformationList = pageResult.getRecords();
+        List<CenterData> CenterDataList = pageResult.getRecords();
         List voList = new ArrayList<>();
-        for (FireFighterInformation fireFighterInformation: FireFighterInformationList){
+        for (CenterData centerData: CenterDataList){
             FirefighterVo fireFighterVo = new FirefighterVo();
-            BeanUtils.copyProperties(fireFighterInformation, fireFighterVo);
+            BeanUtils.copyProperties(centerData, fireFighterVo);
 
             voList.add(fireFighterVo);
         }
 
-        List fireFighterList = pageResult.getRecords().stream().map(fireFighterInformation -> {
+        List centerDataList = pageResult.getRecords().stream().map(centerData -> {
             FirefighterVo firefighterVo = new FirefighterVo();
             QueryWrapper query = new QueryWrapper();
-            query.eq("firefighter_id", fireFighterInformation.getFirefighterId());
-            BeanUtils.copyProperties(fireFighterInformation, firefighterVo);
+            query.eq("id", centerData.getId());
+            BeanUtils.copyProperties(centerData, firefighterVo);
             return firefighterVo;
         }).collect(Collectors.toList());
 
-        pageResult.setRecords(fireFighterList);
+        pageResult.setRecords(centerDataList);
 
         return Result.success(pageResult);
     }
 
-    @DeleteMapping("/deleteFireFighter/{id}")
+    @DeleteMapping("/deleteCenterData/{id}")
     public Result delete(@PathVariable int id){
         log.info("FireFighter delete, userId = {}", id);
-        fireFighterService.deleteFireFighter(id);
+        centerDataService.deleteCenterData(id);
         return Result.success();
     }
+
 }
