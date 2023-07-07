@@ -6,13 +6,17 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("Environmental")
-public class Environmental {
+@TableName("RightArm")
+public class RightArm {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String Timestamp;
-    private double temperature;
-    private double pressure;
-    private double humidity;
-    private double gas;
+    private double acc_x;
+    private double acc_y;
+    private double acc_z;
+    private double gyro_x;
+    private double gyro_y;
+    private double gyro_z;
+    private int EMG;
+    private int Seq;
 }

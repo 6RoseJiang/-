@@ -1,11 +1,13 @@
 package com.example.server.controllers;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.server.pojo.CenterData;
-import com.example.server.service.ICenterDataService;
+import com.example.server.pojo.GaitData;
+import com.example.server.service.IGaitDataService;
 import com.example.server.vo.FirefighterVo;
-import com.example.server.vo.Result;
+import
+        com.example.server.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,52 +25,51 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @Slf4j
-@RequestMapping("/centerdata")
-public class CenterDataController {
+@RequestMapping("/rightankle")
+public class GaitDataController {
 
     @Autowired
-    private ICenterDataService centerDataService;
-    @PostMapping("/addCenterData")
-    public Result add(HttpServletRequest request, @RequestBody CenterData centerData){
+    private IGaitDataService gaitDataService;
+    @PostMapping("/addGaitData")
+    public Result add(HttpServletRequest request, @RequestBody GaitData gaitData){
 
-        log.info("centerdata added, information={}", centerData);
-        centerDataService.saveCenterData(centerData);
+        log.info("gaitdata added, information={}", gaitData);
+        gaitDataService.saveGaitData(gaitData);
         return Result.success();
     }
 
-    @GetMapping("/listCenterData")
+    @GetMapping("/listGaitData")
     public Result list(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "50") int pageSize){
-        log.info("centerdata list, pageNum = {}, pageSize = {}", pageNum, pageSize);
-        Page<CenterData> page = new Page<>(pageNum, pageSize);
-        IPage<CenterData> pageResult = centerDataService.page(page);
+        log.info("gaitdata list, pageNum = {}, pageSize = {}", pageNum, pageSize);
+        Page<GaitData> page = new Page<>(pageNum, pageSize);
+        IPage<GaitData> pageResult = gaitDataService.page(page);
 
-        List<CenterData> CenterDataList = pageResult.getRecords();
+        List<GaitData> GaitDataList = pageResult.getRecords();
         List voList = new ArrayList<>();
-        for (CenterData centerData: CenterDataList){
+        for (GaitData gaitData: GaitDataList){
             FirefighterVo fireFighterVo = new FirefighterVo();
-            BeanUtils.copyProperties(centerData, fireFighterVo);
+            BeanUtils.copyProperties(gaitData, fireFighterVo);
 
             voList.add(fireFighterVo);
         }
 
-        List centerDataList = pageResult.getRecords().stream().map(centerData -> {
+        List gaitdataList = pageResult.getRecords().stream().map(gaitData -> {
             FirefighterVo firefighterVo = new FirefighterVo();
             QueryWrapper query = new QueryWrapper();
-            query.eq("id", centerData.getId());
-            BeanUtils.copyProperties(centerData, firefighterVo);
+            query.eq("id", gaitData.getId());
+            BeanUtils.copyProperties(gaitData, firefighterVo);
             return firefighterVo;
         }).collect(Collectors.toList());
 
-        pageResult.setRecords(centerDataList);
+        pageResult.setRecords(gaitdataList);
 
         return Result.success(pageResult);
     }
 
-    @DeleteMapping("/deleteCenterData/{id}")
+    @DeleteMapping("/deleteGaitData/{id}")
     public Result delete(@PathVariable int id){
-        log.info("FireFighter delete, userId = {}", id);
-        centerDataService.deleteCenterData(id);
+        log.info("GaitData delete, userId = {}", id);
+        gaitDataService.deleteGaitData(id);
         return Result.success();
     }
-
-}//这个也先zhushidiao
+}

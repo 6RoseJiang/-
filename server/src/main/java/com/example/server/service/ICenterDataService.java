@@ -13,4 +13,6 @@ public interface ICenterDataService extends IService<CenterData> {
     void updateCenterData(CenterData centerData);
 
     void insertCenterData(CenterData centerData);
+
+    //void insertCenterData(CenterData centerData);centerDa
 }

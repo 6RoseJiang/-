@@ -1,11 +1,13 @@
 package com.example.server.controllers;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.server.pojo.CenterData;
-import com.example.server.service.ICenterDataService;
+import com.example.server.pojo.RightAnkle;
+import com.example.server.service.IRightAnkleService;
 import com.example.server.vo.FirefighterVo;
-import com.example.server.vo.Result;
+import
+        com.example.server.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,52 +25,51 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @Slf4j
-@RequestMapping("/centerdata")
-public class CenterDataController {
+@RequestMapping("/rightankle")
+public class RightAnkleController {
 
     @Autowired
-    private ICenterDataService centerDataService;
-    @PostMapping("/addCenterData")
-    public Result add(HttpServletRequest request, @RequestBody CenterData centerData){
+    private IRightAnkleService rightAnkleService;
+    @PostMapping("/addRightAnkle")
+    public Result add(HttpServletRequest request, @RequestBody RightAnkle rightAnkle){
 
-        log.info("centerdata added, information={}", centerData);
-        centerDataService.saveCenterData(centerData);
+        log.info("rightankle added, information={}", rightAnkle);
+        rightAnkleService.saveRightAnkle(rightAnkle);
         return Result.success();
     }
 
-    @GetMapping("/listCenterData")
+    @GetMapping("/listRightAnkle")
     public Result list(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "50") int pageSize){
-        log.info("centerdata list, pageNum = {}, pageSize = {}", pageNum, pageSize);
-        Page<CenterData> page = new Page<>(pageNum, pageSize);
-        IPage<CenterData> pageResult = centerDataService.page(page);
+        log.info("rightankle list, pageNum = {}, pageSize = {}", pageNum, pageSize);
+        Page<RightAnkle> page = new Page<>(pageNum, pageSize);
+        IPage<RightAnkle> pageResult = rightAnkleService.page(page);
 
-        List<CenterData> CenterDataList = pageResult.getRecords();
+        List<RightAnkle> RightAnkleList = pageResult.getRecords();
         List voList = new ArrayList<>();
-        for (CenterData centerData: CenterDataList){
+        for (RightAnkle rightAnkle: RightAnkleList){
             FirefighterVo fireFighterVo = new FirefighterVo();
-            BeanUtils.copyProperties(centerData, fireFighterVo);
+            BeanUtils.copyProperties(rightAnkle, fireFighterVo);
 
             voList.add(fireFighterVo);
         }
 
-        List centerDataList = pageResult.getRecords().stream().map(centerData -> {
+        List rightAnkleList = pageResult.getRecords().stream().map(rightAnkle -> {
             FirefighterVo firefighterVo = new FirefighterVo();
             QueryWrapper query = new QueryWrapper();
-            query.eq("id", centerData.getId());
-            BeanUtils.copyProperties(centerData, firefighterVo);
+            query.eq("id", rightAnkle.getId());
+            BeanUtils.copyProperties(rightAnkle, firefighterVo);
             return firefighterVo;
         }).collect(Collectors.toList());
 
-        pageResult.setRecords(centerDataList);
+        pageResult.setRecords(rightAnkleList);
 
         return Result.success(pageResult);
     }
 
-    @DeleteMapping("/deleteCenterData/{id}")
+    @DeleteMapping("/deleteRightAnkle/{id}")
     public Result delete(@PathVariable int id){
-        log.info("FireFighter delete, userId = {}", id);
-        centerDataService.deleteCenterData(id);
+        log.info("RightAnkle delete, userId = {}", id);
+        rightAnkleService.deleteRightAnkle(id);
         return Result.success();
     }
-
-}//这个也先zhushidiao
+}
